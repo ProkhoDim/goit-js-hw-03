@@ -1,28 +1,26 @@
 'use strict';
-const formatString = function(string) {
-  const stringArray = string.split('');
-  const stringArrayLength = stringArray.length;
-  if (stringArrayLength < 40) {
-    return string;
-  }
-  const modifiedStringArray = stringArray.slice(0, 40);
-  const modifiedString = `${modifiedStringArray.join('') + '...'} `;
 
-  return modifiedString;
+const countTotalSalary = function(employees) {
+  const salaryArray = Object.values(employees);
+  let total = 0;
+  for (const key of salaryArray) {
+    total += Number(key);
+  }
+  return total;
 };
 
-console.log(formatString('Curabitur ligula sapien, tincidunt non.'));
-// вернется оригинальная строка
-
-console.log(formatString('Vestibulum facilisis, purus nec pulvinar iaculis.'));
-// вернется форматированная строка
-
-console.log(formatString('Curabitur ligula sapien.'));
-// вернется оригинальная строка
+console.log(
+  countTotalSalary({
+    mango: 100,
+    poly: 150,
+    alfred: 80,
+  }),
+); // 330
 
 console.log(
-  formatString(
-    'Nunc sed turpis. Curabitur a felis in nunc fringilla tristique.',
-  ),
-);
-// вернется форматированная строка
+  countTotalSalary({
+    kiwi: 200,
+    lux: 50,
+    chelsy: 150,
+  }),
+); // 400

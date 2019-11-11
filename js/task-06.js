@@ -1,21 +1,23 @@
 'use strict';
-let input;
-const numbers = [];
-let total = 0;
-input = prompt('Напишите любое число:');
 
-while (input !== null && input !== NaN) {
-  while (isNaN(input)) {
-    alert('Введено не число! Попоробуйте ещё');
-    input = 0;
+const calculateTotalPrice = function(arr, productName) {
+  let totalPrice = 0;
+  for (const obj of arr) {
+    if (productName === obj.name) {
+      totalPrice = obj.price * obj.quantity;
+    }
   }
-  input = Number.parseFloat(input);
-  numbers.push(input);
-  console.log(numbers);
-  input = prompt('Напишите любое число:');
-}
-for (input of numbers) {
-  total = total + input;
-  console.log(total);
-}
-alert(`Сумма = ${total}`);
+
+  return totalPrice;
+};
+
+const products = [
+  { name: 'Радар', price: 1300, quantity: 4 },
+  { name: 'Сканер', price: 2700, quantity: 3 },
+  { name: 'Дроид', price: 400, quantity: 7 },
+  { name: 'Захват', price: 1200, quantity: 2 },
+];
+
+console.log(calculateTotalPrice(products, 'Радар')); // 5200
+
+console.log(calculateTotalPrice(products, 'Дроид')); // 2800

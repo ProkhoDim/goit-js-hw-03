@@ -1,11 +1,21 @@
 'use strict';
 
-const logItems = function(arr) {
-  for (let i = 0; i < arr.length; i += 1) {
-    const elementNumber = `[${i + 1}] - [${arr[i]}]`;
-
-    console.log(elementNumber);
-  }
+const user = {
+  name: 'Mango',
+  age: 20,
+  hobby: 'html',
+  premium: true,
 };
 
-logItems(['Mango', 'Poly', 'Ajax', 'Lux', 'Jay', 'Kong']);
+user.mood = 'happy';
+
+user.hobby = 'javascript';
+
+user.premium = false;
+
+const keysUser = Object.keys(user);
+
+for (const key of keysUser) {
+  console.log(`${key}: ${user[key]}`);
+}
+console.log(user);
