@@ -1,6 +1,5 @@
 'use strict';
 
-let unicId = 0;
 /*
  * Типов транзацкий всего два.
  * Можно положить либо снять деньги со счета.
@@ -24,13 +23,17 @@ const account = {
    * Метод отвечающий за добавление суммы к балансу
    * Создает объект транзакции и вызывает addTransaction
    */
-
+  unicId: 0,
   deposit(amount) {
-    unicId = unicId + 1;
-    const depositTransactionObject = { id: unicId, type: 'deposit', amount: amount };
-    this.balance += amount;
-    this.addTransaction(depositTransactionObject);
-    return depositTransactionObject;
+    if (typeof amount === 'number') {
+      this.unicId = this.unicId + 1;
+      const depositTransactionObject = { id: this.unicId, type: Transaction.DEPOSIT, amount };
+      this.balance += amount;
+      this.addTransaction(depositTransactionObject);
+      return depositTransactionObject;
+    } else {
+      return console.log('введено не число!');
+    }
   },
 
   //   new Date().valueOf();
@@ -43,26 +46,33 @@ const account = {
    * о том, что снятие такой суммы не возможно, недостаточно средств.
    */
   withdraw(amount) {
-    unicId = unicId + 1;
-    const withdrawTransactionObject = { id: unicId, type: 'withdraw', amount: amount };
-    if (this.balance < amount) {
-      console.log(
-        `Недостаточно средств для снятия денег! Вы хотите снять ${amount}, текущий баланс: ${this.balance}`,
-      );
+    if (typeof amount === 'number') {
+      this.unicId = this.unicId + 1;
+      const withdrawTransactionObject = {
+        id: this.unicId,
+        type: Transaction.WITHDRAW,
+        amount,
+      };
+      if (this.balance < amount) {
+        return console.log(
+          `Недостаточно средств! Вы хотите снять ${amount}, текущий баланс: ${this.balance}`,
+        );
+      } else {
+        this.balance -= amount;
+        this.addTransaction(withdrawTransactionObject);
+        return withdrawTransactionObject;
+      }
     } else {
-      this.balance -= amount;
-      this.addTransaction(withdrawTransactionObject);
-      return withdrawTransactionObject;
+      return console.log('введено не число!');
     }
   },
 
   /*
-   * Метод добавляющий транзацию в свойство transactions
+   * Метод добавляющий транзакцию в свойство transactions
    * Принимает объект транзакции
    */
   addTransaction(transaction) {
-    this['transactions'].push(transaction);
-    // console.log(this.transactions);
+    this.transactions.push(transaction);
   },
 
   /*
@@ -70,17 +80,17 @@ const account = {
    */
   getBalance() {
     console.log(`Текущий баланс: ${this.balance}`);
+    return this.balance;
   },
 
   /*
-   * Метод ищет и возвращает объект транзации по id
+   * Метод ищет и возвращает объект транзакции по id
    */
   getTransactionDetails(id) {
-    const transactionArray = this.transactions;
-    // console.log(transactionArray);
-    for (const obj of transactionArray) {
+    for (const obj of this.transactions) {
       if (obj.id === id) {
         console.log(obj);
+        return obj;
       }
     }
   },
@@ -90,22 +100,25 @@ const account = {
    * определенного типа транзакции из всей истории транзакций
    */
   getTransactionTotal(type) {
-    const transactionArray = this.transactions;
-    // console.log(transactionArray);
-    for (const obj of transactionArray) {
+    let total = 0;
+    for (const obj of this.transactions) {
       if (obj.type === type) {
-        console.log(obj);
+        total += obj.amount;
       }
     }
+    console.log(total);
+    return total;
   },
 };
 
 account.deposit(500);
 account.deposit(200);
 account.withdraw(600);
+account.withdraw('asda');
 account.deposit(300);
 account.deposit(10);
 account.withdraw(600);
+account.deposit('gfgsd');
 account.withdraw(500);
 account.withdraw(100);
 account.getBalance();
